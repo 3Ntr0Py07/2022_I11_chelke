@@ -1,8 +1,7 @@
 #Rechner für Fibonacci Reihe
 from logging import root
-from tkinter import * 
+from tkinter import *
 from tkinter import ttk
-import numpy
 
 class Error(Exception):
     pass
@@ -32,21 +31,46 @@ def popup(msg,ttl):
     root.attributes('-topmost', True)
     root.mainloop()
 
+def calc(x):
+    if x < 2:
+        return 1
+    else:
+        x = calc(x-1) + calc(x-2)
+        return x
+
+
+def zahl():
+    print('Den wievielten Wert der Fibonaccireihe wollen sie sehen?')
+    try:
+        n = int(input())
+    except:
+        print('Der Wert darf nur eine Natürliche Zahl betragen')
+
 def menu():
+    running = True
     print('''Menü 
     1: Diagramm
     2: Tabelle
     3: Tabelle & Diagramm
     4: Vorschrift
-    5: Zahlwert''')
-    while Running:
+    5: Zahlwert
+    6: Schließen''')
+    while running:
         try:
             m = int(input())
             if m < 1: raise VError
-            if m > 5: raise VeError
+            if m > 6: raise VError
         except VError:
-            popup('Die Eingabe muss zwischen 1 und 5 liegen','Value Error')
+            popup('Die Eingabe muss zwischen 1 und 6 liegen','Value Error')
         except ValueError:
             popup('Eingabe muss eine Natürliche Zahl sein','Type Error')
+        switch = {
+            1: '',
+            2: '',
+            3: '',
+            4: '',
+            5: '',
+            6: quit()
+        }
 
 menu()
