@@ -1,7 +1,3 @@
+import Zahlenreihe as z
 
-
-while True:
-    if input() == 'q':
-        z.kill()
-        import Zahlenreihe as z
-        quit()
+z.kill()
