@@ -2,7 +2,9 @@
 
 #Aktualisirung:
 #c:\users\entropy\appdata\local\programs\python\python310\python.exe
-import pip
+#C:\Users\chelke\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\python.exe
+
+from cgi import print_environ
 from logging import exception, root
 from tkinter import *
 from tkinter import ttk
@@ -14,13 +16,50 @@ import re
 import matplotlib.pyplot as plt
 from Zahlenreihe import *
 import colorama
+import threading
+import os
+import keyboard
+import subprocess as sub
+import random
 
 colorama.init()
+
+#cpid = sub.Popen(['cmd'],start_new_session=True,shell=True).pid
 
 Formel = 'a(n-1) + a(n-2)'
 Forig = 'a(n-1) + a(n-2)'
 Abbr = [2,1]
 aorig = [2,1]
+canc = False
+
+class cancelThreat(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self, name = 'Thread1')
+    def run(self):
+        global canc
+        print('Start Thread')
+        while not canc:
+            if keyboard.is_pressed('space'):
+                print('\rpressed')
+                os.system('start cmd')
+                canc = True
+            else:
+                os.system('start cmd')
+                #os.system('pause')
+                #sys.stdout.flush()
+        print('Thread end')
+        os.system('start cmd')
+
+def startt():
+    try:
+        if t1.isAlive():
+            return t1
+        t1 = cancelThreat()
+        t1.start()
+    except:
+        t1 = cancelThreat()
+        t1.start()
+    return t1
 
 class Error(Exception):
     pass
@@ -91,6 +130,13 @@ def popup(msg,ttl,xw,yw):
     root.mainloop()
 '''
 
+def keytool():
+    x = random.randint(0,1)
+    if x == 1:
+        print('Die Tür ist offen.')
+    else:
+        print('Die Tür ist geschlossen')
+
 def diagram(boo,n):
     form = ''
     xarr = [0]
@@ -103,6 +149,7 @@ def diagram(boo,n):
         except:
             print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}")
     print('Sollen die Punkte verbunden werden? Eingabe: y/n bzw. ja/nein')
+    l = time()
     while True:
         yn = input()
         yn = yn.lower()
@@ -119,12 +166,16 @@ def diagram(boo,n):
     else:
         print('Loading')
     for i in range(1,n+1):
-        xarr= xarr + [i]
-        yarr= yarr + [a(i)]
+        xarr = xarr + [i]
+        yarr = yarr + [a(i)]
         j = (i)/n
         sys.stdout.write('\r')
-        sys.stdout.write("[%-40s] %d%%" % ('='*int(40*j), 100*j))
+        sys.stdout.write("|%-40s| %d%%" % ('█'*int(40*j), 100*j))
         sys.stdout.flush()
+        if keyboard.is_pressed('esc'):
+            return
+    b = time()
+    print('\n' + str(b-l))
     print()
     xpoints = array(xarr)
     ypoints = array(yarr)
@@ -164,13 +215,18 @@ Operatoren:
                 abr = input('Geben sie einen Konstanten Anfangswert an\nWenn n < Wert 1 , dann ist a Wert 2\nEingabeformat: Wert1,Wert2\n')
                 Abbr = abr.split(',')
                 kor = int(input('Geben sie den 5. Wert ein, damit die Formel auf Korrektheit geprüft werden kann.\n'))
-                if a(5) == kor:
-                    print(f'{bcolors.OKGREEN}Die Anwendungen wurden jetzt auf ihre Formel angepasst, es kann allerdings bei Tabellen zu Grafikfehlern kommen.{bcolors.OKGREEN}')
-                    return
-                else:
-                    print(f'{bcolors.WARNING}Irgendetwas scheint in ihren Angaben nicht übereinzustimmen, bitte überprüfen sie Formel und 5. Wert. Errechnet für a(5) wurde: {bcolors.ENDC}' + str(a(5)) + f'.{bcolors.WARNING}\nWiederholen sie dann die korrigierte Eingabe.{bcolors.ENDC}\nFalls sie die Formel doch nicht ändern wollen schreiben sie Quit.')
-                    Formel = Forig
-                    Abbr = aorig
+                try:
+                    if a(5) == kor:
+                        print('Die Anwendungen wurden jetzt auf ihre Formel angepasst, es kann allerdings bei Tabellen zu Grafikfehlern kommen.')
+                        return
+                    else:
+                        print(f'{bcolors.WARNING}Irgendetwas scheint in ihren Angaben nicht übereinzustimmen, bitte überprüfen sie Formel und 5. Wert. Errechnet für a(5) wurde: {bcolors.ENDC}' + str(a(5)) + f'.{bcolors.WARNING}\nWiederholen sie dann die korrigierte Eingabe.{bcolors.ENDC}\nFalls sie die Formel doch nicht ändern wollen schreiben sie Quit.')
+                        Formel = Forig
+                        Abbr = aorig
+                except Exception as _err:
+                    print(f'{bcolors.FAIL}Ihre Formel scheint mathematisch nicht korrekt zu sein. Überprüfen sie die Syntax und versuchen sie erneut.{bcolors.ENDC}')
+                    print("Error Message:")
+                    print(str(_err))
                 
         elif yn.lower() == 'reset':
             Formel = Forig
@@ -181,6 +237,7 @@ Operatoren:
             print(f"{bcolors.FAIL}Die Eingabe entspricht nicht y,n,ja oder nein{bcolors.ENDC}")
 
 def kill():
+    #os.system('taskkill /PID /F ' + str(cpid))
     quit()
 
 
@@ -213,9 +270,8 @@ def tablec(n,boo):
         
         j = (i)/n
         sys.stdout.write('\r')
-        sys.stdout.write("[%-40s] %d%%" % ('='*int(40*j), 100*j))
+        sys.stdout.write("|%-40s| %d%%" % ('█'*int(40*j), 100*j))
         sys.stdout.flush()
-        sleep(0.25)
     return xarr,xarr2,yarr,yarr2
 
 
@@ -280,7 +336,8 @@ def menu():
         3: dnt,
         4: zahl,
         5: vorschrift,
-        6: quit
+        6: kill,
+        42: keytool
     }
     """
     print('''   Menü 
@@ -293,9 +350,9 @@ def menu():
     """
     while True:
         try:
-            m = int(input('''Menü \n1: Diagramm\n2: Tabelle\n3: Tabelle & Diagramm\n4: Vorschrift\n5: Zahlwert\n6: Schließen\n'''))
+            m = int(input('''Menü \n1: Diagramm\n2: Tabelle\n3: Tabelle & Diagramm\n4: Zahlwert\n5: Vorschrift\n6: Schließen\n'''))
             if m < 1: raise VError
-            if m > 6: raise VError
+            if m > 6 and m != 42: raise VError
             if switch[m] == table or switch[m] == diagram:
                 switch[m](False,0)
             else:
@@ -307,6 +364,7 @@ def menu():
             #popup('Eingabe muss eine Natürliche Zahl sein','Type Error',1,1)
             print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}")
         
-print(f'\n{bcolors.OKCYAN}Ein Rechner für Zahlenfolgen{bcolors.ENDC}')
+print(f'\n{bcolors.HEADER}Ein Rechner für Zahlenfolgen{bcolors.ENDC}')
 print('Alle gemessenen Angaben oder Emfehlungen beziehen sich auf die Fibonacci-Folge\n')
 menu()
+
