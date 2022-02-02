@@ -123,7 +123,7 @@ def diagram(boo,n):
         yarr= yarr + [a(i)]
         j = (i)/n
         sys.stdout.write('\r')
-        sys.stdout.write("[%-40s] %d%%" % ('='*int(40*j), 100*j))
+        sys.stdout.write("[%-40s] %d%%" % ('❚'*int(40*j), 100*j))
         sys.stdout.flush()
     print()
     xpoints = array(xarr)
@@ -165,7 +165,7 @@ Operatoren:
                 Abbr = abr.split(',')
                 kor = int(input('Geben sie den 5. Wert ein, damit die Formel auf Korrektheit geprüft werden kann.\n'))
                 if a(5) == kor:
-                    print(f'{bcolors.OKGREEN}Die Anwendungen wurden jetzt auf ihre Formel angepasst, es kann allerdings bei Tabellen zu Grafikfehlern kommen.{bcolors.OKGREEN}')
+                    print('Die Anwendungen wurden jetzt auf ihre Formel angepasst, es kann allerdings bei Tabellen zu Grafikfehlern kommen.')
                     return
                 else:
                     print(f'{bcolors.WARNING}Irgendetwas scheint in ihren Angaben nicht übereinzustimmen, bitte überprüfen sie Formel und 5. Wert. Errechnet für a(5) wurde: {bcolors.ENDC}' + str(a(5)) + f'.{bcolors.WARNING}\nWiederholen sie dann die korrigierte Eingabe.{bcolors.ENDC}\nFalls sie die Formel doch nicht ändern wollen schreiben sie Quit.')
@@ -213,7 +213,7 @@ def tablec(n,boo):
         
         j = (i)/n
         sys.stdout.write('\r')
-        sys.stdout.write("[%-40s] %d%%" % ('='*int(40*j), 100*j))
+        sys.stdout.write("[%-40s] %d%%" % ('❚'*int(40*j), 100*j))
         sys.stdout.flush()
         sleep(0.25)
     return xarr,xarr2,yarr,yarr2
@@ -307,6 +307,6 @@ def menu():
             #popup('Eingabe muss eine Natürliche Zahl sein','Type Error',1,1)
             print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}")
         
-print(f'\n{bcolors.OKCYAN}Ein Rechner für Zahlenfolgen{bcolors.ENDC}')
-print('Alle gemessenen Angaben oder Emfehlungen beziehen sich auf die Fibonacci-Folge\n')
+print(f'\n{bcolors.HEADER}Ein Rechner für Zahlenfolgen{bcolors.ENDC}')
+print(f'{bcolors.UNDERLINE}Alle gemessenen Angaben oder Emfehlungen beziehen sich auf die Fibonacci-Folge{bcolors.ENDC}\n')
 menu()
