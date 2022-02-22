@@ -4,8 +4,6 @@
 #c:\users\entropy\appdata\local\programs\python\python310\python.exe
 #C:\Users\chelke\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\python.exe
 
-from cgi import print_environ
-from logging import exception, root
 from tkinter import *
 from tkinter import ttk
 from time import *
@@ -14,13 +12,13 @@ from numpy import *
 from tabulate import tabulate
 import re
 import matplotlib.pyplot as plt
-from Zahlenreihe import *
 import colorama
-import threading
-import os
 import keyboard
 import subprocess as sub
 import random
+import pandas as pd
+import os
+import platform
 
 colorama.init()
 
@@ -32,6 +30,7 @@ Abbr = [2,1]
 aorig = [2,1]
 canc = False
 
+'''
 class cancelThreat(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self, name = 'Thread1')
@@ -50,6 +49,10 @@ class cancelThreat(threading.Thread):
         print('Thread end')
         os.system('start cmd')
 
+
+'''
+
+'''
 def startt():
     try:
         if t1.isAlive():
@@ -60,6 +63,7 @@ def startt():
         t1 = cancelThreat()
         t1.start()
     return t1
+'''
 
 class Error(Exception):
     pass
@@ -82,6 +86,22 @@ class bcolors:
     UNDERLINE = '\033[4m'
     ITALIC = '\033[3m'
     pass
+
+
+def dos():
+    return platform.system()
+
+def restart():
+    x = dos()
+    print(f'{bcolors.OKBLUE}Rebooting{bcolors.ENDC}')
+    sleep(1)
+    if x == 'Linux' or x == 'Darwin':
+        os.system('clear')
+    elif x == 'Windows':
+        os.system('cls')
+    else:
+        print(f'{bcolors.FAIL}Your Operation System is not Supported for this Function yet{bcolors.ENDC}')
+    os.execv(sys.executable, ['python'] + sys.argv)
 
 '''
 class Reprinter:
@@ -130,12 +150,14 @@ def popup(msg,ttl,xw,yw):
     root.mainloop()
 '''
 
+
 def keytool():
     x = random.randint(0,1)
     if x == 1:
         print('Die Tür ist offen.')
     else:
         print('Die Tür ist geschlossen')
+
 
 def diagram(boo,n):
     form = ''
@@ -149,7 +171,6 @@ def diagram(boo,n):
         except:
             print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}")
     print('Sollen die Punkte verbunden werden? Eingabe: y/n bzw. ja/nein')
-    l = time()
     while True:
         yn = input()
         yn = yn.lower()
@@ -162,9 +183,9 @@ def diagram(boo,n):
         else:
             print(f"{bcolors.FAIL}Die Eingabe entspricht nicht y,n,ja oder nein{bcolors.ENDC}")
     if boo:
-            print('Loading Diagramm')
+            print(f'{bcolors.OKCYAN}Loading Diagramm{bcolors.ENDC}')
     else:
-        print('Loading')
+        print(f'{bcolors.OKCYAN}Loading{bcolors.ENDC}')
     for i in range(1,n+1):
         xarr = xarr + [i]
         yarr = yarr + [a(i)]
@@ -174,8 +195,6 @@ def diagram(boo,n):
         sys.stdout.flush()
         if keyboard.is_pressed('esc'):
             return
-    b = time()
-    print('\n' + str(b-l))
     print()
     xpoints = array(xarr)
     ypoints = array(yarr)
@@ -187,6 +206,7 @@ def diagram(boo,n):
         plt.table(cellText=tabl, cellColours=None, cellLoc='right', colWidths=None, rowLabels=['Wert Nr.','Wert'], rowColours=None, rowLoc='center', colLabels=None, colColours=None, colLoc='center', loc='top', bbox=None, edges='closed')
     plt.show()
     
+
 def vorschrift():
     global Formel,Forig,Abbr,aorig
     print('Die aktuelle Vorschrift ist: a = ' + Formel + ' a(n < ' + str(Abbr[0]) +') = '+ str(Abbr[1]) +'\nWollen sie diese ändern oder auf Standart zurücksetzen?\nEingabe y/n, ja/nein oder reset')
@@ -202,12 +222,18 @@ Operatoren:
     Addition -> +
     Subtraktion -> -
     Quadratwurzel-> sqrt()
-    n-te Wurzel aus x -> x**(1/n)
+    Potenzen
+    m-te Wurzel aus x -> x**(1/m)
     Sinus/Cosinus/Tangens -> cos()/sin()/tan()
     Arcussinus usw. -> arcsin() usw.
     Natürlicher Logarithmus -> log()
     Logarithmus Basis 2/10 -> log2()/log10()
-    n-te wert von a -> a(n)''')
+    n-te wert von a -> a(n)
+Konstanten:
+    Eulersche Zahl e -> e
+    π -> pi
+    Euler-Mascheroni-Konstante (γ)-> euler_gamma
+    Falls Eine andere Konstante benötigt wird, kann entweder der Zahlwert eingegeben werden oder auf Anfrage diese hinzugefügt werden.''')
             while True:
                 Formel = input('a(n) = ')
                 if Formel.lower() == 'quit':
@@ -236,9 +262,18 @@ Operatoren:
         else:
             print(f"{bcolors.FAIL}Die Eingabe entspricht nicht y,n,ja oder nein{bcolors.ENDC}")
 
+
 def kill():
     #os.system('taskkill /PID /F ' + str(cpid))
     quit()
+
+
+def ptz(a,b):
+    x = float_power(a,b)
+    if abs(x-floor(x))<1e-6:
+        trunc(x)
+    return x
+    
 
 
 def a(n):
@@ -249,6 +284,7 @@ def a(n):
         return n
 
 
+'''
 def tablec(n,boo):
     xarr = ['Wert Nr.']
     yarr = ['Wert']
@@ -273,14 +309,12 @@ def tablec(n,boo):
         sys.stdout.write("|%-40s| %d%%" % ('█'*int(40*j), 100*j))
         sys.stdout.flush()
     return xarr,xarr2,yarr,yarr2
+'''
 
 
 def table(boo,n):
-    file = True
-    try:
-        f = open('time.txt','a')
-    except:
-        file = False
+    xarr = ['Wert']
+    yarr = ['Wert Nr.']
     if not boo:
         print('Wie lang soll die Tabelle sein?\nBeginn ist immer Element 1.\nEmpfohlenes Maximum:40 (89,9 Sekunden Auf Intel I7 9.Gen)')
         while True:
@@ -289,19 +323,29 @@ def table(boo,n):
                 break
             except:
                 print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}")
-    a = perf_counter()
-    xarr,xarr2,yarr,yarr2 = tablec(n,boo)
-    b = perf_counter()
-    if file:
-        f.write(str(n) + ': ' + str(b-a))
-    print('\n')
-    tabl = [xarr] + [yarr]
-    df = tabulate(tabl,headers= [],tablefmt='fancy_grid')
-    if len(yarr2)>1:
-        tabl2 = [xarr2] + [yarr2]
-        df = df + '\n' + tabulate(tabl2,headers= [],tablefmt='fancy_grid')
-    else:
-        print(df)
+    print(f'{bcolors.OKCYAN}Loading Table{bcolors.ENDC}')
+    for i in range(1,n+1):
+        xarr = xarr + [str(i)]
+        yarr = yarr + [str(a(i))]
+        j = (i)/n
+        sys.stdout.write('\r')
+        sys.stdout.write("|%-40s| %d%%" % ('█'*int(40*j), 100*j))
+        sys.stdout.flush()
+        if keyboard.is_pressed('esc'):
+            return
+    #fig, ax = plt.subplots()
+    #fig.patch.set_visible(False)
+    #ax.axis('off')
+    #ax.axis('tight')
+    tabl = [xarr,yarr]
+    #df = pd.DataFrame(data = array(tabl),dtype = 'string')
+    df = tabulate(tabl, tablefmt="fancy_grid")
+    print('\n' +df)
+    #ax = table(cellText=df.values, cellColours=None, cellLoc='right', colWidths=None, rowLabels=['Wert Nr.','Wert'], rowColours=None, rowLoc='center', colLabels=None, colColours=None, colLoc='center', loc='top', bbox=None, edges='closed')
+    #ax.set_fontsize(14)
+    #ax.setscale(2,2)
+    #fig.tight_layout()
+    #plt.show()    
 
 
 def zahl():
@@ -337,6 +381,7 @@ def menu():
         4: zahl,
         5: vorschrift,
         6: kill,
+        7: restart,
         42: keytool
     }
     """
@@ -352,7 +397,7 @@ def menu():
         try:
             m = int(input('''Menü \n1: Diagramm\n2: Tabelle\n3: Tabelle & Diagramm\n4: Zahlwert\n5: Vorschrift\n6: Schließen\n'''))
             if m < 1: raise VError
-            if m > 6 and m != 42: raise VError
+            if m > 7 and m != 42: raise VError
             if switch[m] == table or switch[m] == diagram:
                 switch[m](False,0)
             else:
@@ -360,9 +405,9 @@ def menu():
         except VError:
             #popup('Die Eingabe muss zwischen 1 und 6 liegen','Value Error',1,1)
             print(f"{bcolors.FAIL}Die Eingabe muss zwischen 1 und 6 liegen{bcolors.ENDC}")
-        except ValueError:
+        except ValueError as err:
             #popup('Eingabe muss eine Natürliche Zahl sein','Type Error',1,1)
-            print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}")
+            print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}\n" + str(err))
         
 print(f'\n{bcolors.HEADER}Ein Rechner für Zahlenfolgen{bcolors.ENDC}')
 print('Alle gemessenen Angaben oder Emfehlungen beziehen sich auf die Fibonacci-Folge\n')

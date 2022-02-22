@@ -1,2 +1,7 @@
 test.py
 \__pycache__
+
+pip install numpy
+pip install matplotlib
+pip install colorama
+pip install tabulate
