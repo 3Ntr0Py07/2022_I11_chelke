@@ -1,4 +1,4 @@
-'Rechner für Fibonacci Reihe'
+'Rechner für Zahlenfolgen'
 
 #Aktualisirung:
 #c:\users\entropy\appdata\local\programs\python\python310\python.exe
@@ -88,19 +88,23 @@ class bcolors:
     pass
 
 
-def dos():
-    return platform.system()
-
-def restart():
+def clear():
     x = dos()
-    print(f'{bcolors.OKBLUE}Rebooting{bcolors.ENDC}')
-    sleep(1)
     if x == 'Linux' or x == 'Darwin':
         os.system('clear')
     elif x == 'Windows':
         os.system('cls')
     else:
         print(f'{bcolors.FAIL}Your Operation System is not Supported for this Function yet{bcolors.ENDC}')
+
+def dos():
+    return platform.system()
+
+
+def restart():
+    print(f'{bcolors.OKBLUE}Rebooting{bcolors.ENDC}')
+    clear()
+    sleep(1)
     os.execv(sys.executable, ['python'] + sys.argv)
 
 '''
@@ -152,14 +156,17 @@ def popup(msg,ttl,xw,yw):
 
 
 def keytool():
+    clear()
     x = random.randint(0,1)
     if x == 1:
         print('Die Tür ist offen.')
     else:
-        print('Die Tür ist geschlossen')
+    print('Die Tür ist geschlossen')
 
 
 def diagram(boo,n):
+    if boo = False:
+        clear()
     form = ''
     xarr = [0]
     yarr = [0]
@@ -208,6 +215,7 @@ def diagram(boo,n):
     
 
 def vorschrift():
+    clear()
     global Formel,Forig,Abbr,aorig
     print('Die aktuelle Vorschrift ist: a = ' + Formel + ' a(n < ' + str(Abbr[0]) +') = '+ str(Abbr[1]) +'\nWollen sie diese ändern oder auf Standart zurücksetzen?\nEingabe y/n, ja/nein oder reset')
     while True:   
@@ -313,6 +321,7 @@ def tablec(n,boo):
 
 
 def table(boo,n):
+    clear()
     xarr = ['Wert']
     yarr = ['Wert Nr.']
     if not boo:
@@ -349,6 +358,7 @@ def table(boo,n):
 
 
 def zahl():
+    clear()
     print('Den wievielten Wert Zahlenreihe wollen sie sehen?')
     while True:
         try:
@@ -363,6 +373,7 @@ def zahl():
 
 
 def dnt():
+    clear()
     print('Bis zum wievielten Wert soll Diagramm und Tabelle reichen?')
     while True:
         try:
@@ -374,6 +385,7 @@ def dnt():
     
 
 def menu():
+    clear()
     switch = {
         1: diagram,
         2: table,
