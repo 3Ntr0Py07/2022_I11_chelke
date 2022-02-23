@@ -16,54 +16,19 @@ import colorama
 import keyboard
 import subprocess as sub
 import random
-import pandas as pd
+#import pandas as pd
 import os
 import platform
 
 colorama.init()
 
-#cpid = sub.Popen(['cmd'],start_new_session=True,shell=True).pid
 
 Formel = 'a(n-1) + a(n-2)'
 Forig = 'a(n-1) + a(n-2)'
 Abbr = [2,1]
-aorig = [2,1]
+Aorig = [2,1]
 canc = False
 
-'''
-class cancelThreat(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self, name = 'Thread1')
-    def run(self):
-        global canc
-        print('Start Thread')
-        while not canc:
-            if keyboard.is_pressed('space'):
-                print('\rpressed')
-                os.system('start cmd')
-                canc = True
-            else:
-                os.system('start cmd')
-                #os.system('pause')
-                #sys.stdout.flush()
-        print('Thread end')
-        os.system('start cmd')
-
-
-'''
-
-'''
-def startt():
-    try:
-        if t1.isAlive():
-            return t1
-        t1 = cancelThreat()
-        t1.start()
-    except:
-        t1 = cancelThreat()
-        t1.start()
-    return t1
-'''
 
 class Error(Exception):
     pass
@@ -85,6 +50,7 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     ITALIC = '\033[3m'
+    BROWN = '\033[31m'
     pass
 
 
@@ -97,75 +63,29 @@ def clear():
     else:
         print(f'{bcolors.FAIL}Your Operation System is not Supported for this Function yet{bcolors.ENDC}')
 
+
 def dos():
     return platform.system()
 
 
 def restart():
-    print(f'{bcolors.OKBLUE}Rebooting{bcolors.ENDC}')
     clear()
-    sleep(1)
-    os.execv(sys.executable, ['python'] + sys.argv)
-
-'''
-class Reprinter:
-    def __init__(self):
-        self.text = ''
-
-    def moveup(self, lines):
-        for _ in range(lines):
-            sys.stdout.write("\x1b[A")
-
-    def reprint(self, text):
-        # Clear previous text by overwritig non-spaces with spaces
-        self.moveup(self.text.count("\n"))
-        sys.stdout.write(re.sub(r"[^\s]", " ", self.text))
-
-        # Print new text
-        lines = min(self.text.count("\n"), text.count("\n"))
-        self.moveup(lines)
-        sys.stdout.write(text)
-        self.text = text
-
-LARGE_FONT= ("Verdana", 12)
-NORM_FONT = ("Helvetica", 10)
-SMALL_FONT = ("Helvetica", 8)
-
-def restart_line():
-    sys.stdout.write('\r')
-    sys.stdout.flush()
-
-
-def popup(msg,ttl,xw,yw):
-    root = Tk()
-    root.wm_title(ttl)
-    label = ttk.Label(root, text=msg, font=NORM_FONT)
-    hs = label.winfo_screenheight()
-    y = hs*0.1*yw
-    h = (hs/2)-(y/2)
-    ws = label.winfo_screenwidth()
-    x = ws*0.2*xw
-    w = (ws/2)-(x/2)
-    root.geometry('%dx%d+%d+%d' % (x, y, w ,h ))
-    label.place(relx = 0.5, rely = 0.35, anchor = 'center')
-    B1 = ttk.Button(root, text="Okay", command = root.destroy)
-    B1.place(relx = 0.5, rely = 0.7, anchor = 'center')
-    root.attributes('-topmost', True)
-    root.mainloop()
-'''
+    print(f'{bcolors.OKBLUE}Rebooting{bcolors.ENDC}')
+    sub.Popen(['python3'] + sys.argv)
+    sys.exit()
 
 
 def keytool():
     clear()
     x = random.randint(0,1)
     if x == 1:
-        print('Die Tür ist offen.')
+        print(f'{bcolors.BROWN}Die Tür ist offen.{bcolors.ENDC}')
     else:
-    print('Die Tür ist geschlossen')
+        print(f'{bcolors.BROWN}Die Tür ist geschlossen{bcolors.ENDC}')
 
 
 def diagram(boo,n):
-    if boo = False:
+    if boo == False:
         clear()
     form = ''
     xarr = [0]
@@ -216,7 +136,7 @@ def diagram(boo,n):
 
 def vorschrift():
     clear()
-    global Formel,Forig,Abbr,aorig
+    global Formel,Forig,Abbr,Aorig
     print('Die aktuelle Vorschrift ist: a = ' + Formel + ' a(n < ' + str(Abbr[0]) +') = '+ str(Abbr[1]) +'\nWollen sie diese ändern oder auf Standart zurücksetzen?\nEingabe y/n, ja/nein oder reset')
     while True:   
         yn = input().lower()
@@ -256,7 +176,7 @@ Konstanten:
                     else:
                         print(f'{bcolors.WARNING}Irgendetwas scheint in ihren Angaben nicht übereinzustimmen, bitte überprüfen sie Formel und 5. Wert. Errechnet für a(5) wurde: {bcolors.ENDC}' + str(a(5)) + f'.{bcolors.WARNING}\nWiederholen sie dann die korrigierte Eingabe.{bcolors.ENDC}\nFalls sie die Formel doch nicht ändern wollen schreiben sie Quit.')
                         Formel = Forig
-                        Abbr = aorig
+                        Abbr = Aorig
                 except Exception as _err:
                     print(f'{bcolors.FAIL}Ihre Formel scheint mathematisch nicht korrekt zu sein. Überprüfen sie die Syntax und versuchen sie erneut.{bcolors.ENDC}')
                     print("Error Message:")
@@ -264,7 +184,7 @@ Konstanten:
                 
         elif yn.lower() == 'reset':
             Formel = Forig
-            Abbr = aorig
+            Abbr = Aorig
             print(f'{bcolors.OKGREEN}Vorschrift zurückgesetzt{bcolors.ENDC}')
             return
         else:
@@ -281,7 +201,6 @@ def ptz(a,b):
     if abs(x-floor(x))<1e-6:
         trunc(x)
     return x
-    
 
 
 def a(n):
@@ -290,34 +209,6 @@ def a(n):
     else:
         n = eval(Formel)
         return n
-
-
-'''
-def tablec(n,boo):
-    xarr = ['Wert Nr.']
-    yarr = ['Wert']
-    xarr2 = ['Wert Nr.']
-    yarr2 = ['Wert']
-    if boo:
-        print('Loading Table')
-    else:
-        print('Loading')
-    for i in range(1,n+1):
-        if i >= 30:
-            xarr2 = xarr2 + [str(i)]
-            yarr2 = yarr2 + [str(a(i))]
-        #elif i >=
-        
-        else:
-            xarr = xarr + [str(i)]
-            yarr = yarr + [str(a(i))]
-        
-        j = (i)/n
-        sys.stdout.write('\r')
-        sys.stdout.write("|%-40s| %d%%" % ('█'*int(40*j), 100*j))
-        sys.stdout.flush()
-    return xarr,xarr2,yarr,yarr2
-'''
 
 
 def table(boo,n):
@@ -350,11 +241,6 @@ def table(boo,n):
     #df = pd.DataFrame(data = array(tabl),dtype = 'string')
     df = tabulate(tabl, tablefmt="fancy_grid")
     print('\n' +df)
-    #ax = table(cellText=df.values, cellColours=None, cellLoc='right', colWidths=None, rowLabels=['Wert Nr.','Wert'], rowColours=None, rowLoc='center', colLabels=None, colColours=None, colLoc='center', loc='top', bbox=None, edges='closed')
-    #ax.set_fontsize(14)
-    #ax.setscale(2,2)
-    #fig.tight_layout()
-    #plt.show()    
 
 
 def zahl():
@@ -385,7 +271,6 @@ def dnt():
     
 
 def menu():
-    clear()
     switch = {
         1: diagram,
         2: table,
@@ -396,16 +281,10 @@ def menu():
         7: restart,
         42: keytool
     }
-    """
-    print('''   Menü 
-    1: Diagramm
-    2: Tabelle
-    3: Tabelle & Diagramm
-    4: Zahlwert
-    5: Vorschrift
-    6: Schließen''')
-    """
+    _isFirst = True
     while True:
+        if (not _isFirst):
+            clear()
         try:
             m = int(input('''Menü \n1: Diagramm\n2: Tabelle\n3: Tabelle & Diagramm\n4: Zahlwert\n5: Vorschrift\n6: Schließen\n'''))
             if m < 1: raise VError
@@ -420,8 +299,12 @@ def menu():
         except ValueError as err:
             #popup('Eingabe muss eine Natürliche Zahl sein','Type Error',1,1)
             print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}\n" + str(err))
-        
-print(f'\n{bcolors.HEADER}Ein Rechner für Zahlenfolgen{bcolors.ENDC}')
-print('Alle gemessenen Angaben oder Emfehlungen beziehen sich auf die Fibonacci-Folge\n')
-menu()
+        os.system("pause")
+        _isFirst = False
+
+if (__name__ == "__main__"):
+    clear()
+    print(f'{bcolors.HEADER}Ein Rechner für Zahlenfolgen{bcolors.ENDC}')
+    print('Alle gemessenen Angaben oder Emfehlungen beziehen sich auf die Fibonacci-Folge\n')
+    menu()
 
