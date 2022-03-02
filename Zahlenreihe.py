@@ -5,29 +5,35 @@
 #C:\Users\chelke\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\python.exe
 
 from tkinter import *
-from tkinter import ttk
-from time import *
-import sys
-from numpy import *
-from tabulate import tabulate
-import re
 import matplotlib.pyplot as plt
-import colorama
-import keyboard
-import subprocess as sub
-import random
-#import pandas as pd
+#Einblendung des Graphen
+from time import *
+#Pausen/Wartezeiten
+import sys
 import os
+#Kommunikation mit der Konsole
+from numpy import *
+#Bibliothek für viele mathematische Funktionen
+from tabulate import tabulate
+#Formatierung Tabellen für Text-Ausgabe
+import colorama
+#Farbige Schrift in Windows Konsole
+import keyboard
+#Tastatureingabe direkt
+import subprocess as sub
+#Für Neustarts
+import random
+#Zufallszahlen
 import platform
+#Information zum Betriebssystem
 
 colorama.init()
-
 
 Formel = 'a(n-1) + a(n-2)'
 Forig = 'a(n-1) + a(n-2)'
 Abbr = [2,1]
 Aorig = [2,1]
-canc = False
+#Definition der Formel
 
 
 class Error(Exception):
@@ -36,6 +42,7 @@ class Error(Exception):
 
 class VError(Error):
     pass
+#Eigene Fehlerklassen
 
 
 class bcolors:
@@ -52,20 +59,18 @@ class bcolors:
     ITALIC = '\033[3m'
     BROWN = '\033[31m'
     pass
+#Klasse Farbcodes basierend auf Ansi-Escape-Sequenzen 
 
 
 def clear():
-    x = dos()
+    x = platform.system()
     if x == 'Linux' or x == 'Darwin':
         os.system('clear')
     elif x == 'Windows':
         os.system('cls')
     else:
         print(f'{bcolors.FAIL}Your Operation System is not Supported for this Function yet{bcolors.ENDC}')
-
-
-def dos():
-    return platform.system()
+#Refresh der Konsole, So dass immer nur ein Menü sichtbar ist
 
 
 def restart():
@@ -73,6 +78,7 @@ def restart():
     print(f'{bcolors.OKBLUE}Rebooting{bcolors.ENDC}')
     sub.Popen(['python3'] + sys.argv)
     sys.exit()
+#Neustartfunktion, nur für Wartung vorgesehen
 
 
 def keytool():
@@ -82,6 +88,7 @@ def keytool():
         print(f'{bcolors.BROWN}Die Tür ist offen.{bcolors.ENDC}')
     else:
         print(f'{bcolors.BROWN}Die Tür ist geschlossen{bcolors.ENDC}')
+#Ein kleines Easteregg
 
 
 def diagram(boo,n):
@@ -131,8 +138,10 @@ def diagram(boo,n):
     plt.grid(True)
     if boo:
         plt.table(cellText=tabl, cellColours=None, cellLoc='right', colWidths=None, rowLabels=['Wert Nr.','Wert'], rowColours=None, rowLoc='center', colLabels=None, colColours=None, colLoc='center', loc='top', bbox=None, edges='closed')
+    print(f'{bcolors.OKCYAN}Done{bcolors.ENDC}')
     plt.show()
-    
+#Ausgabe eines Graphen mit optionaler Tabelle (Aufruf der Tabelle nur über dnt()), Pop-Up
+
 
 def vorschrift():
     clear()
@@ -189,11 +198,7 @@ Konstanten:
             return
         else:
             print(f"{bcolors.FAIL}Die Eingabe entspricht nicht y,n,ja oder nein{bcolors.ENDC}")
-
-
-def kill():
-    #os.system('taskkill /PID /F ' + str(cpid))
-    quit()
+#Ausgabe der Funktionsforschrift, sowie Optionale Bearbeitung und Zürücksetzung auf Standard
 
 
 def ptz(a,b):
@@ -201,6 +206,7 @@ def ptz(a,b):
     if abs(x-floor(x))<1e-6:
         trunc(x)
     return x
+#Verkürzung der Potenzfunktion -> Einfachere eingabe in vorschrift()
 
 
 def a(n):
@@ -209,6 +215,7 @@ def a(n):
     else:
         n = eval(Formel)
         return n
+#Rekursive Funktion für Berechnung der Zahlenreihe 
 
 
 def table(boo,n):
@@ -240,7 +247,9 @@ def table(boo,n):
     tabl = [xarr,yarr]
     #df = pd.DataFrame(data = array(tabl),dtype = 'string')
     df = tabulate(tabl, tablefmt="fancy_grid")
+    print(f'{bcolors.OKCYAN}Done{bcolors.ENDC}')
     print('\n' +df)
+#Ausgabe einer Tabelle als Text
 
 
 def zahl():
@@ -253,9 +262,10 @@ def zahl():
         except:
             print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}")
     if n == 1:
-        print('Der erste Wert Zahlenreihe ist '+ str(a(n)))
+        print('Der erste Wert der Zahlenreihe ist '+ str(a(n)))
     else:
         print(f'Der ' + str(n) + '-te Wert der Zahlenreihe ist '+ str(a(n)))
+#Ausgabe einer einzelnen Zahl innerhalb der Reihe
 
 
 def dnt():
@@ -268,7 +278,8 @@ def dnt():
         except:
             print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}")
     diagram(True,n)
-    
+#Funktion zur Weiterleitung an diagram() mit Tabelle
+
 
 def menu():
     switch = {
@@ -277,7 +288,7 @@ def menu():
         3: dnt,
         4: zahl,
         5: vorschrift,
-        6: kill,
+        6: sys.exit,
         7: restart,
         42: keytool
     }
@@ -301,10 +312,12 @@ def menu():
             print(f"{bcolors.FAIL}Eingabe muss eine natürliche Zahl \u2115 sein{bcolors.ENDC}\n" + str(err))
         os.system("pause")
         _isFirst = False
+#Ein Menü um alle Funktionen aufzurufen 
+
 
 if (__name__ == "__main__"):
     clear()
     print(f'{bcolors.HEADER}Ein Rechner für Zahlenfolgen{bcolors.ENDC}')
     print('Alle gemessenen Angaben oder Emfehlungen beziehen sich auf die Fibonacci-Folge\n')
     menu()
-
+#Ausführung des Programms
