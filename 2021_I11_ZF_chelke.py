@@ -36,11 +36,8 @@ Aorig = [2,1]
 #Definition der Formel
 
 
-class Error(Exception):
-    pass
 
-
-class VError(Error):
+class VError(Exception):
     pass
 #Eigene Fehlerklassen
 
